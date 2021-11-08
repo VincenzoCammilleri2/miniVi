@@ -39,11 +39,11 @@ void placeCursorAt(Position coordinate) {			//Starts at (0, 0)
 }
 
 void Editor::displayLines() {
-	for (int position = 1; position < lines.getLength(); position++) {
+	for (int position = 1; position <= lines.getLength(); position++) {
 		cout << lines.getEntry(position) << endl;
 	}
 
-	//placeCursorAt();
+	//placeCursorAt(point);
 }
 
 void Editor::run() {

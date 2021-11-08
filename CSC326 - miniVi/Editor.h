@@ -19,6 +19,7 @@ public:
 
 private:
 	LinkedList<string> lines;
+	Position point;
 	string filename;
 	const char QUIT = 'q';
 };
