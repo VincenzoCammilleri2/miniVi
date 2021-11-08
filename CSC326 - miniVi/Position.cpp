@@ -1,7 +1,13 @@
 #include "Position.h"
 
 Position::Position() {
-	
+	mX = 0;
+	mY = 0;
+}
+
+Position::Position(int mX, int mY) {
+	this->mX = mX;
+	this->mY = mY;
 }
 
 void Position::setX(int x) {

@@ -10,6 +10,7 @@ using namespace std;
 class Position {
 public:
 	Position();
+	Position(int mX, int mY);
 	void setX(int x);
 	void setY(int y);
 	const int getX();

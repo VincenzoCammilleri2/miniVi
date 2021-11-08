@@ -16,12 +16,14 @@ public:
 	Editor(string filename);
 	void displayLines();
 	void run();
+	void deleteCharacter();
 
 private:
 	LinkedList<string> lines;
 	Position point;
 	string filename;
 	const char QUIT = 'q';
+
 };
 
 #include "Editor.cpp"

@@ -27,6 +27,8 @@ Editor::Editor(string filename) {
 	}
 
 	inFile.close();
+
+	displayLines();
 }
 
 void placeCursorAt(Position coordinate) {			//Starts at (0, 0)
@@ -43,11 +45,13 @@ void Editor::displayLines() {
 		cout << lines.getEntry(position) << endl;
 	}
 
-	//placeCursorAt(point);
+	placeCursorAt(point);
 }
 
 void Editor::run() {
 	char command;
+	int bottom = lines.getLength() + 5;
+	Position endOfScreen(0, bottom);
 	command = _getwch();
 
 	while (command != QUIT) {
@@ -55,8 +59,16 @@ void Editor::run() {
 		case 'x':					//Deletes character				
 
 			break;
-		case ':':					//Brings cursor to bottom of the screen + user should enter another character afterward
+		case ':':					
+			placeCursorAt(Position (endOfScreen));					//Brings cursor to bottom of the screen
+			
+			cout << ':';
+			
+			command = _getwche();									//Gets the next character enter by end-user
+			
+			if (command == 'w') {									//Saves file
 
+			} 
 			break;
 		}
 	}

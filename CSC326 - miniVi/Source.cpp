@@ -5,6 +5,5 @@ using namespace std;
 
 int main() {
 	Editor miniVi("TestDummy.txt");
-	system("CLS");
-	miniVi.displayLines();
+	miniVi.run();
 }
