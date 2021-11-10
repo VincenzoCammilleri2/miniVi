@@ -18,6 +18,7 @@ public:
 	void run();
 	void deleteCharacter();
 	void saveFile(string filename);
+	void commandMode();
 
 private:
 	LinkedList<string> lines;
