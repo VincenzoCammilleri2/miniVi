@@ -1,10 +1,6 @@
-d main() {
+void main() {
 	int x, y;
 	x = 3;
 	y = 7;
 	cout << x + y;
 }
-
-
-
-

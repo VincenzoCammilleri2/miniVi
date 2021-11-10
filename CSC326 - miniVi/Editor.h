@@ -19,14 +19,19 @@ public:
 	void deleteCharacter();
 	void saveFile(string filename);
 	void commandMode();
+	void deleteLine();
+	void moveDown();
+	void moveUp();
+	void moveLeft();
+	void moveRight();
+	void quit();
 
 private:
 	LinkedList<string> lines;
 	Position point;
 	string filename;
 	char deleteChar;
-	const char QUIT = 'q';
-
+	bool changes = false;
 };
 
 #include "Editor.cpp"
