@@ -4,6 +4,6 @@
 using namespace std;
 
 int main() {
-	Editor miniVi("TestDummy.txt");
-	miniVi.run();
+	Editor miniVi("TestDummy.txt");					//Opens and read from file
+	miniVi.run();									
 }

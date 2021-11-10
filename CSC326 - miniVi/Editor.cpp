@@ -31,7 +31,7 @@ Editor::Editor(string filename) {
 	displayLines();
 }
 
-void placeCursorAt(Position coordinate) {			//Starts at (0, 0)
+void placeCursorAt(Position coordinate) {			
 	COORD coord;
 	coord.X = coordinate.getX();
 	coord.Y = coordinate.getY();
@@ -41,23 +41,33 @@ void placeCursorAt(Position coordinate) {			//Starts at (0, 0)
 }
 
 void Editor::displayLines() {
-	for (int position = 1; position <= lines.getLength(); position++) {
+	system("CLS");
+
+	//Prints every line from the linked list
+	for (int position = 1; position <= lines.getLength(); position++) {	
 		cout << lines.getEntry(position) << endl;
 	}
 
+	//Places cursor at coordinates (0, 0)
 	placeCursorAt(point);
 }
 
 void Editor::run() {
 	char command;
-	int bottom = lines.getLength() + 5;
+	string currentLine;
+	int bottom = lines.getLength() + 1;
 	Position endOfScreen(0, bottom);
 	command = _getwch();
 
 	while (command != QUIT) {
 		switch (command) {
-		case 'x':					//Deletes character				
-
+		case 'x':													//Deletes character
+			currentLine = lines.getEntry(point.getY() + 1);			//getEntry to get the line in the file
+			
+			lines.replace(point.getY() + 1, currentLine);			//replace function to replace the line
+			
+			displayLines();											//displayLines to redisplay on output screen
+			
 			break;
 		case ':':					
 			placeCursorAt(Position (endOfScreen));					//Brings cursor to bottom of the screen
@@ -67,9 +77,24 @@ void Editor::run() {
 			command = _getwche();									//Gets the next character enter by end-user
 			
 			if (command == 'w') {									//Saves file
-
-			} 
+				saveFile("TestDummy.txt");
+			}
+			else if (command == 'q'){								//Exits program
+				exit(1);
+			}
 			break;
 		}
 	}
+}
+
+void Editor::saveFile(string filename) {
+	ofstream outFile;
+
+	outFile.open(filename, ofstream::out);
+
+	for (int i = 1; i <= lines.getLength(); i++) {
+		outFile << lines.getEntry(i) << endl;
+	}
+
+	outFile.close();
 }

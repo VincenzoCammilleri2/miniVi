@@ -17,11 +17,13 @@ public:
 	void displayLines();
 	void run();
 	void deleteCharacter();
+	void saveFile(string filename);
 
 private:
 	LinkedList<string> lines;
 	Position point;
 	string filename;
+	char deleteChar;
 	const char QUIT = 'q';
 
 };

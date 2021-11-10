@@ -4,3 +4,4 @@ void main() {
 	y = 7;
 	cout << x + y;
 }
+
