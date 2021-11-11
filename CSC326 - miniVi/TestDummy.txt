@@ -1,7 +1,8 @@
-void main (int, int)
+void (int,int){
 	int x, y;
 	x = 3;
 	y = 7;
 	cout << x + y;
 }
+
 
