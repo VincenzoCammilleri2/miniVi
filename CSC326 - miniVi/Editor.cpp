@@ -8,7 +8,7 @@ Editor::Editor() {
 
 }
 
-Editor::Editor(string filename) {
+Editor::Editor(string filename) {							
 	ifstream inFile;
 	int linePosition = 0;
 	string line;
@@ -43,7 +43,7 @@ void placeCursorAt(Position coordinate) {
 		coord);
 }
 
-void Editor::displayLines() {
+void Editor::displayLines() {									
 	system("CLS");
 
 	//Prints every line from the linked list
@@ -58,7 +58,7 @@ void Editor::displayLines() {
 void Editor::run() {
 	char command;
 
-	while ((command = _getwch())) {
+	while ((command = _getwch())) {						//all work but delete line VC
 		switch (command) {
 		case 'x':													//Deletes character
 			deleteCharacter();
@@ -88,7 +88,7 @@ void Editor::run() {
 	}
 }
 
-void Editor::saveFile(string filename) {
+void Editor::saveFile(string filename) {							
 	ofstream outFile;
 
 	outFile.open(filename, ofstream::out);
@@ -100,7 +100,7 @@ void Editor::saveFile(string filename) {
 	outFile.close();
 }
 
-void Editor::deleteCharacter() {
+void Editor::deleteCharacter() {							//works VC
 	string currentLine;
 	
 	currentLine = lines.getEntry(point.getY() + 1);			//Stores copy of string using getEntry to get the line in the file
@@ -114,7 +114,7 @@ void Editor::deleteCharacter() {
 	changes = true;											//Set changes to file as true
 }
 
-void Editor::commandMode() {
+void Editor::commandMode() {								
 	char command;
 	int bottom = lines.getLength() + 1;
 	Position endOfScreen(0, bottom);				
@@ -126,17 +126,20 @@ void Editor::commandMode() {
 	command = _getwche();									//Gets the next character enter by end-user
 
 	if (command == 'w') {									//Saves file
-		saveFile("TestDummy.txt");
+		saveFile("TestDummy.txt");							
 	}
 	else if (command == 'q') {								//Exits program
 		exit(1);
 	}
 }
 
-void Editor::deleteLine() {
+/*VC: when i tested this fxn, :dd did not delete line
+but :ddd did*/
+void Editor::deleteLine() { 
+
 	char command;
 
-	cout << 'd';
+	cout << 'd'; //VC: wouldn't it have to be dd?
 
 	command = _getwche();									//Gets the next character enter by end-user
 
