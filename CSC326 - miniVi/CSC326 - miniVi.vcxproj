@@ -151,7 +151,6 @@
     <ClInclude Include="Node.h" />
     <ClInclude Include="Position.h" />
     <ClInclude Include="PrecondViolatedExcep.h" />
-    <ClInclude Include="StackInterface.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="TestDummy.txt" />

@@ -4,5 +4,3 @@ void (int,int){
 	y = 7;
 	cout << x + y;
 }
-
-
