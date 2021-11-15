@@ -58,7 +58,7 @@ void Editor::displayLines() {
 void Editor::run() {
 	char command;
 
-	while ((command = _getwch())) {						//all work but delete line VC
+	while ((command = _getwch())) {						
 		switch (command) {
 		case 'x':													//Deletes character
 			deleteCharacter();
@@ -133,13 +133,12 @@ void Editor::commandMode() {
 	}
 }
 
-/*VC: when i tested this fxn, :dd did not delete line
-but :ddd did*/
+
 void Editor::deleteLine() { 
 
 	char command;
 
-	cout << 'd'; //VC: wouldn't it have to be dd?
+	cout << 'd'; 
 
 	command = _getwche();									//Gets the next character enter by end-user
 
