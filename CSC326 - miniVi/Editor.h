@@ -34,5 +34,4 @@ private:
 	bool changes = false;
 };
 
-#include "Editor.cpp"
 #endif

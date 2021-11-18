@@ -22,5 +22,4 @@ private:
 	int mY;
 };
 
-#include "Position.cpp"
 #endif

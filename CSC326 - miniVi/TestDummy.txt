@@ -1,6 +1,6 @@
-void (int,int){
-	int x, y;
-	x = 3;
-	y = 7;
-	cout << x + y;
+void main(int,int){
+ int x, y;
+ x = 3;
+ y = 7;
+ cout << x + y;
 }

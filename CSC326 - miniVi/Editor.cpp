@@ -69,7 +69,8 @@ void Editor::run() {
 		case 'd':													//Delete current line
 			deleteLine();
 			break;
-		case 'j':													//Move cursor down 
+		case 'j':
+		case 80:													//Move cursor down 
 			moveDown();
 			break;
 		case 'k':													//Move cursor up
@@ -81,7 +82,7 @@ void Editor::run() {
 		case 'l':													//Move cursor right
 			moveRight();
 			break;
-		case 'q':													//Quit without any changes
+		case 'q':													//Quit 
 			quit();
 			break;
 		}
@@ -116,7 +117,8 @@ void Editor::deleteCharacter() {							//works VC
 
 void Editor::commandMode() {								
 	char command;
-	int bottom = lines.getLength() + 1;
+	char answer;
+	int bottom = lines.getLength();
 	Position endOfScreen(0, bottom);				
 
 	placeCursorAt(Position(endOfScreen));					//Brings cursor to bottom of the screen
@@ -126,21 +128,30 @@ void Editor::commandMode() {
 	command = _getwche();									//Gets the next character enter by end-user
 
 	if (command == 'w') {									//Saves file
-		saveFile("TestDummy.txt");							
+		saveFile("TestDummy.txt");	
+		changes = false;
 	}
 	else if (command == 'q') {								//Exits program
-		exit(1);
+		if (changes == true) {
+			cout << endl << "Are you sure you want to quit? (y/n): " << endl;			//Prompts the end-user about quitting with changes made
+			cin >> answer;
+
+			if (answer == 'y' || answer == 'Y')				//Will exit the program
+				exit(1);
+			else											//Will run the editor
+				displayLines();
+
+		}
+		else
+			exit(1);
 	}
 }
-
 
 void Editor::deleteLine() { 
 
 	char command;
 
-	cout << 'd'; 
-
-	command = _getwche();									//Gets the next character enter by end-user
+	command = _getwch();									//Gets the next character enter by end-user
 
 	if (command == 'd')										//Removes the current line
 		lines.remove(point.getY() + 1);
@@ -151,20 +162,28 @@ void Editor::deleteLine() {
 
 void Editor::moveDown() {
 	int down = point.getY();
+	string nextLine = lines.getEntry(point.getY() + 2);		
 
-	//Moves cursor down
-	if (point.getY() < lines.getLength()) 
-		point.setY(down + 1); 
+	////Moves cursor down
+	if (point.getX() > nextLine.length()) {					//Checks if cursor is at the end of the strinng
+		point.setX(nextLine.length() - 1);
+	}
+
+	point.setY(down + 1);
 
 	placeCursorAt(point);
 }
 
 void Editor::moveUp() {
 	int up = point.getY();
+	string nextLine = lines.getEntry(point.getY());
 
 	//Moves cursor up
-	if (point.getY() > 0) 
-		point.setY(up - 1);
+	if (point.getX() > nextLine.length()) {
+		point.setX(nextLine.length() - 1);
+	}
+
+	point.setY(up - 1);
 
 	placeCursorAt(point);
 }
@@ -172,12 +191,10 @@ void Editor::moveUp() {
 void Editor::moveLeft() {
 	int left = point.getX();
 
-	//Allow cursor to move left
-	if (point.getX() >= 0) 
+	////Allow cursor to move left
+	if (left > 0) 
 		point.setX(left - 1);
-	else 
-		point.setX(0);				//Resets the cursor if out of bounds
-
+	
 	placeCursorAt(point);
 }
 
@@ -185,7 +202,7 @@ void Editor::moveRight() {
 	int right = point.getX();
 
 	//Allows cursor to move right
-	if (point.getX() >= 0) 
+	if (right >= 0 && right < lines.getEntry(point.getY() + 1).length() - 1) 
 		point.setX(right + 1);
 
 	placeCursorAt(point);
@@ -193,7 +210,7 @@ void Editor::moveRight() {
 
 void Editor::quit() {
 	char command;
-	int bottom = lines.getLength() + 1;
+	int bottom = lines.getLength();
 	Position endOfScreen(0, bottom);
 	char answer;
 
@@ -203,17 +220,7 @@ void Editor::quit() {
 
 	command = _getwche();									//Gets the next character enter by end-user
 
-	if (command == '!') {
-		if (changes == true) {
-			cout << endl << "Are you sure you want to quit? (y/n): " << endl;			//Prompts the end-user about quitting with changes made
-			cin >> answer;
-
-			if (answer == 'y' || answer == 'Y')				//Will exit the program
-				exit(1);
-			else 											//Will run the editor
-				run();
-		}
-		
+	if (command == '!') 
 		exit(1);						//Quit if no changes were made in the editor
-	}
+	
 }
