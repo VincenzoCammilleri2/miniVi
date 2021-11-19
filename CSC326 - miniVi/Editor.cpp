@@ -165,9 +165,8 @@ void Editor::moveDown() {
 	string nextLine = lines.getEntry(point.getY() + 2);		
 
 	////Moves cursor down
-	if (point.getX() > nextLine.length()) {					//Checks if cursor is at the end of the strinng
+	if (point.getX() > nextLine.length())					//Checks if cursor is at the end of the string
 		point.setX(nextLine.length() - 1);
-	}
 
 	point.setY(down + 1);
 
@@ -179,9 +178,8 @@ void Editor::moveUp() {
 	string nextLine = lines.getEntry(point.getY());
 
 	//Moves cursor up
-	if (point.getX() > nextLine.length()) {
+	if (point.getX() >= nextLine.length()) 
 		point.setX(nextLine.length() - 1);
-	}
 
 	point.setY(up - 1);
 
@@ -201,7 +199,7 @@ void Editor::moveLeft() {
 void Editor::moveRight() {
 	int right = point.getX();
 
-	//Allows cursor to move right
+	//Allows cursor to move right to the end of the string
 	if (right >= 0 && right < lines.getEntry(point.getY() + 1).length() - 1) 
 		point.setX(right + 1);
 
