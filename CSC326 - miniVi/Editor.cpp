@@ -163,39 +163,38 @@ void Editor::deleteLine() {
 }
 
 void Editor::moveDown() {
-	if (point.getY() == lines.getLength() - 1)
+	if (point.getY() == lines.getLength() - 1)				//Returns if you try to go down at the end of the list
 		return;
 
-	//int down = point.getY();
-	int end = lines.getLength() - 1;
+	int down = point.getY();
 	string nextLine = lines.getEntry(point.getY() + 2);		
 
 	//Moves cursor down
 	if (point.getX() >= nextLine.length()) {				//Checks if cursor is at the end of the string
-		point.setY(point.getY() + 1);
+		point.setY(down + 1);
 		point.setX(nextLine.length() - 1);
 	}
 	else {
-		point.setY(point.getY() + 1);
+		point.setY(down + 1);								//Moves down if cursor is not at the end of the string
 	}
 
 	placeCursorAt(point);
 }
 
 void Editor::moveUp() {
-	if (point.getY() == 0)
+	if (point.getY() == 0)									//Returns if you try to go up at the beginning of the list
 		return;
 
 	int up = point.getY();
 	string prevLine = lines.getEntry(point.getY());
 
 	//Moves cursor up
-	if (point.getX() >= prevLine.length()) {
+	if (point.getX() >= prevLine.length()) {				//Checks if the cursor is at the end of the string
 		point.setY(up - 1);
 		point.setX(prevLine.length() - 1);
 	}
 	else {
-		point.setY(up - 1);
+		point.setY(up - 1);									//Moves up if cursor is not at the end of the string
 	}
 
 	placeCursorAt(point);
