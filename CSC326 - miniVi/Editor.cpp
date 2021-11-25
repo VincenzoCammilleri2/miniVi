@@ -69,8 +69,7 @@ void Editor::run() {
 		case 'd':													//Delete current line
 			deleteLine();
 			break;
-		case 'j':
-		case 80:													//Move cursor down 
+		case 'j':													//Move cursor down 
 			moveDown();
 			break;
 		case 'k':													//Move cursor up
@@ -84,6 +83,9 @@ void Editor::run() {
 			break;
 		case 'q':													//Quit 
 			quit();
+			break;
+		case 'z':
+			//undoChange();
 			break;
 		}
 	}
@@ -161,27 +163,40 @@ void Editor::deleteLine() {
 }
 
 void Editor::moveDown() {
-	int down = point.getY();
+	if (point.getY() == lines.getLength() - 1)
+		return;
+
+	//int down = point.getY();
+	int end = lines.getLength() - 1;
 	string nextLine = lines.getEntry(point.getY() + 2);		
 
-	////Moves cursor down
-	if (point.getX() > nextLine.length())					//Checks if cursor is at the end of the string
+	//Moves cursor down
+	if (point.getX() >= nextLine.length()) {				//Checks if cursor is at the end of the string
+		point.setY(point.getY() + 1);
 		point.setX(nextLine.length() - 1);
-
-	point.setY(down + 1);
+	}
+	else {
+		point.setY(point.getY() + 1);
+	}
 
 	placeCursorAt(point);
 }
 
 void Editor::moveUp() {
+	if (point.getY() == 0)
+		return;
+
 	int up = point.getY();
-	string nextLine = lines.getEntry(point.getY());
+	string prevLine = lines.getEntry(point.getY());
 
 	//Moves cursor up
-	if (point.getX() >= nextLine.length()) 
-		point.setX(nextLine.length() - 1);
-
-	point.setY(up - 1);
+	if (point.getX() >= prevLine.length()) {
+		point.setY(up - 1);
+		point.setX(prevLine.length() - 1);
+	}
+	else {
+		point.setY(up - 1);
+	}
 
 	placeCursorAt(point);
 }
