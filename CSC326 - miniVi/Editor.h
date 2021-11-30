@@ -7,6 +7,7 @@
 #include "LinkedStack.h"
 #include "Position.h"
 #include "Windows.h"
+#include "Changes.h"
 
 using namespace std;
 
@@ -25,12 +26,13 @@ public:
 	void moveLeft();
 	void moveRight();
 	void quit();
+	void undo();
 
 private:
 	LinkedList<string> lines;
+	LinkedStack<Changes> undoChange;
 	Position point;
-	string filename;
-	char deleteChar;
+	Changes lastChange;
 	bool changes = false;
 };
 

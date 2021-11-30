@@ -84,8 +84,8 @@ void Editor::run() {
 		case 'q':													//Quit 
 			quit();
 			break;
-		case 'z':
-			//undoChange();
+		case 'u':													//Undo last change
+			undo();
 			break;
 		}
 	}
@@ -107,6 +107,12 @@ void Editor::deleteCharacter() {							//works VC
 	string currentLine;
 	
 	currentLine = lines.getEntry(point.getY() + 1);			//Stores copy of string using getEntry to get the line in the file
+
+	lastChange.setChanges(currentLine);
+	lastChange.setPosition(point.getY() + 1);
+	lastChange.setCommand('x');
+
+	undoChange.push(lastChange);
 
 	currentLine.erase(point.getX(), 1);						//Deletes the character at cursor position (x)
 
@@ -150,10 +156,16 @@ void Editor::commandMode() {
 }
 
 void Editor::deleteLine() { 
-
+	string currentLine = lines.getEntry(point.getY() + 1);
 	char command;
 
 	command = _getwch();									//Gets the next character enter by end-user
+
+	lastChange.setChanges(currentLine);
+	lastChange.setPosition(point.getY() + 1);
+	lastChange.setCommand('d');
+
+	undoChange.push(lastChange);
 
 	if (command == 'd')										//Removes the current line
 		lines.remove(point.getY() + 1);
@@ -235,4 +247,20 @@ void Editor::quit() {
 	if (command == '!') 
 		exit(1);						//Quit if no changes were made in the editor
 	
+}
+
+void Editor::undo() {
+	if (!undoChange.isEmpty()) {
+		lastChange = undoChange.peek();
+		if (lastChange.getCommand() == 'x') {
+			lines.replace(lastChange.getPosition(), lastChange.getChanges());
+		}
+		else if (lastChange.getCommand() == 'd')
+		{
+			lines.insert(lastChange.getPosition(), lastChange.getChanges());
+		}
+		undoChange.pop();
+	}
+
+	displayLines();
 }

@@ -140,12 +140,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Changes.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="PrecondViolatedExcep.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Changes.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="LinkedStack.h" />
