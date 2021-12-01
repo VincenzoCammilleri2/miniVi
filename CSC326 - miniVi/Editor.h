@@ -11,7 +11,7 @@
 
 using namespace std;
 
-const int MAX_SIZE = 60;
+const int MAX_SIZE = 61;
 
 class Editor {
 public:

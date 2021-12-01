@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 #include "Editor.h"
 
 using namespace std;
@@ -8,8 +9,74 @@ Editor::Editor() {
 
 }
 
+template<class ItemType>
+void bubbleSort(ItemType theArray[], int n)
+{
+	bool sorted = false; // False when swaps occur
+	int pass = 1;
+	while (!sorted && (pass < n))
+	{
+		// At this point, theArray[n+1-pass..n-1] is sorted
+		// and all of its entries are > the entries in theArray[0..n-pass]
+		sorted = true; // Assume sorted
+		for (int index = 0; index < n - pass; index++)
+		{
+			// At this point, all entries in theArray[0..index-1]
+			// are <= theArray[index]
+			int nextIndex = index + 1;
+			if (theArray[index] > theArray[nextIndex])
+			{
+				// Exchange entries
+			std:swap(theArray[index], theArray[nextIndex]);
+				sorted = false; // Signal exchange
+			} // end if
+		}  // end for
+		// Assertion: theArray[0..n-pass-1] < theArray[n-pass]
+
+		pass++;
+	}  // end while
+}  // end bubbleSort
+
+void placeCursorAt(Position coordinate) {
+	COORD coord;
+	coord.X = coordinate.getX();
+	coord.Y = coordinate.getY();
+	SetConsoleCursorPosition(
+		GetStdHandle(STD_OUTPUT_HANDLE),
+		coord);
+}
+
+void colorText(int value) {
+	COORD coord;
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	FlushConsoleInputBuffer(hConsole);
+	SetConsoleTextAttribute(hConsole, value + 240);
+}
+
+template <typename T>
+int binarySearch(const T anArray[], int first, int last, T target)
+{
+	int index;
+	if (first > last)
+		index = -1; // target not in original array
+	else
+	{
+		// If target is in anArray, anArray[first] <= target <= anArray[last]
+		int mid = first + (last - first) / 2;
+		if (target == anArray[mid])
+			index = mid; // target found at anArray[mid]
+		else if (target < anArray[mid])
+			// Point X
+			index = binarySearch(anArray, first, mid - 1, target);
+		else
+			// Point Y
+			index = binarySearch(anArray, mid + 1, last, target);
+	}  // end if
+
+	return index;
+}  // end binarySearch
+
 Editor::Editor(string filename) {
-	LinkedList<string> keyWordsList;
 	ifstream inFile;
 	int linePosition = 0;
 	string line;
@@ -32,118 +99,64 @@ Editor::Editor(string filename) {
 
 	inFile.close();
 
-	//inFile.open("keywords.txt");
+	inFile.open("keywords.txt");
 
-	////Check if file can be opened
-	//if (!inFile) {
-	//	cout << "Error opening the file." << endl;
-	//	exit(1);
-	//}
+	//Check if file can be opened
+	if (!inFile) {
+		cout << "Error opening the file." << endl;
+		exit(1);
+	}
 
-	////Iterate through the end of file
-	//while (!inFile.eof()) {
-	//	inFile >> keyword;									//Store each keyword				
-	//	keyWordsList.insert(numKeywords + 1, keyword);		//Inserts each keyword
-	//	numKeywords++;										//Increments numKeywords
-	//}
+	//Iterate through the end of file
+	while (!inFile.eof()) {
+		inFile >> keyword;													
+		keyWords[numKeywords] = keyword;					//Store each keyword
+		numKeywords++;										//Increments numKeywords
+	}
 
-	//for (int i = 0; i < numKeywords; i++) {
-	//	keyWords[i] = keyWordsList.getEntry(i + 1);
-	//}
-
+	bubbleSort(keyWords, MAX_SIZE);							//Sorts the keywords array
 	displayLines();
-}
-
-void placeCursorAt(Position coordinate) {
-	COORD coord;
-	coord.X = coordinate.getX();
-	coord.Y = coordinate.getY();
-	SetConsoleCursorPosition(
-		GetStdHandle(STD_OUTPUT_HANDLE),
-		coord);
-}
-
-void colorText(int value) {
-	COORD coord;
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	FlushConsoleInputBuffer(hConsole);
-	SetConsoleTextAttribute(hConsole, value + 240);
 }
 
 void Editor::displayLines() {
 	system("CLS");
 
-	//Prints every line from the linked list
-	for (int position = 1; position <= lines.getLength(); position++) {
-		cout << lines.getEntry(position) << endl;
+	string nextLine;
+
+	//Goes through each line in the linked list 
+	for (int position = 1; position <= lines.getLength(); position++)
+	{
+		nextLine = lines.getEntry(position);
+
+		int i = 0;
+		while (i < nextLine.length()) {
+			string word;
+			
+			//Isolate a word at a time (can contains underscores)
+			if (isalpha(nextLine[i])) {
+				while (isalpha(nextLine[i]) || nextLine[i] == '_') {
+					word += nextLine[i];
+					i++;
+				}
+				if (binarySearch<string>(keyWords, 0, numKeywords - 1, word) != -1)  //Found
+					colorText(1);
+				else
+					colorText(0);
+				cout << word;
+			}
+			else {
+				colorText(0);
+				cout << nextLine[i];
+				i++;
+			}
+
+		}
+
+		cout << endl;
 	}
 
-	//Places cursor at coordinates (0, 0)
 	placeCursorAt(point);
-}
-
-//template <typename T>
-//int binarySearch(const T anArray[], int first, int last, T target)
-//{
-//	int index;
-//	if (first > last)
-//		index = -1; // target not in original array
-//	else
-//	{
-//		// If target is in anArray, anArray[first] <= target <= anArray[last]
-//		int mid = first + (last - first) / 2;
-//		if (target == anArray[mid])
-//			index = mid; // target found at anArray[mid]
-//		else if (target < anArray[mid])
-//			// Point X
-//			index = binarySearch(anArray, first, mid - 1, target);
-//		else
-//			// Point Y
-//			index = binarySearch(anArray, mid + 1, last, target);
-//	}  // end if
-//
-//	return index;
-//}  // end binarySearch
-
-//void Editor::displayLines() {
-//	system("CLS");
-//
-//	string nextLine;
-//
-//	//Goes through each line in the linked list 
-//	for (int position = 1; position <= lines.getLength(); position++)
-//	{
-//		nextLine = lines.getEntry(position);
-//
-//		int i = 0;
-//		while (i < nextLine.length()) {
-//			string word;
-//			
-//			//Isolate a word at a time (can contains underscores)
-//			if (isalpha(nextLine[i])) {
-//				while (isalpha(nextLine[i]) || nextLine[i] == '_') {
-//					word += nextLine[i];
-//					i++;
-//				}
-//				if (binarySearch<string>(keyWords, 0, numKeywords - 1, word) != -1)  //Found
-//					colorText(1);
-//				else
-//					colorText(0);
-//				cout << word;
-//			}
-//			else {
-//				colorText(0);
-//				cout << nextLine[i];
-//				i++;
-//			}
-//
-//		}
-//
-//		cout << endl;
-//	}
-//
-//	placeCursorAt(point);
-//} 
+} 
 
 void Editor::run() {
 	char command;
@@ -335,24 +348,25 @@ void Editor::quit() {
 	command = _getwche();									//Gets the next character enter by end-user
 
 	if (command == '!') 
-		exit(1);						//Quit if no changes were made in the editor
+		exit(1);											//Quit if no changes were made in the editor
 	
 }
 
 void Editor::undo() {
+	//Check if the stack is empty
 	if (!undoChange.isEmpty()) {
-		lastChange = undoChange.peek();
-		point = lastChange.getPosition();
+		lastChange = undoChange.peek();				//Peek at the last change saved in the stack
+		point = lastChange.getPosition();			
 		if (lastChange.getCommand() == 'x') {
-			lines.replace(point.getY() + 1, lastChange.getChanges());
-			placeCursorAt(point);
+			lines.replace(point.getY() + 1, lastChange.getChanges());		//Undo the delete character
+			placeCursorAt(point);											//Moves cursor to last position
 		}
 		else if (lastChange.getCommand() == 'd')
 		{
-			lines.insert(point.getY() + 1, lastChange.getChanges());
-			placeCursorAt(point);
+			lines.insert(point.getY() + 1, lastChange.getChanges());		//Undo the delete line
+			placeCursorAt(point);											//Moves cursor to last position
 		}
-		undoChange.pop();
+		undoChange.pop();				//Pop last change on stack
 	}
 
 	displayLines();
