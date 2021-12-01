@@ -8,11 +8,12 @@ Editor::Editor() {
 
 }
 
-Editor::Editor(string filename) {							
+Editor::Editor(string filename) {
+	LinkedList<string> keyWordsList;
 	ifstream inFile;
 	int linePosition = 0;
 	string line;
-	changes = false;
+	string keyword;
 
 	inFile.open(filename);
 
@@ -31,10 +32,29 @@ Editor::Editor(string filename) {
 
 	inFile.close();
 
+	//inFile.open("keywords.txt");
+
+	////Check if file can be opened
+	//if (!inFile) {
+	//	cout << "Error opening the file." << endl;
+	//	exit(1);
+	//}
+
+	////Iterate through the end of file
+	//while (!inFile.eof()) {
+	//	inFile >> keyword;									//Store each keyword				
+	//	keyWordsList.insert(numKeywords + 1, keyword);		//Inserts each keyword
+	//	numKeywords++;										//Increments numKeywords
+	//}
+
+	//for (int i = 0; i < numKeywords; i++) {
+	//	keyWords[i] = keyWordsList.getEntry(i + 1);
+	//}
+
 	displayLines();
 }
 
-void placeCursorAt(Position coordinate) {			
+void placeCursorAt(Position coordinate) {
 	COORD coord;
 	coord.X = coordinate.getX();
 	coord.Y = coordinate.getY();
@@ -43,17 +63,87 @@ void placeCursorAt(Position coordinate) {
 		coord);
 }
 
-void Editor::displayLines() {									
+void colorText(int value) {
+	COORD coord;
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	FlushConsoleInputBuffer(hConsole);
+	SetConsoleTextAttribute(hConsole, value + 240);
+}
+
+void Editor::displayLines() {
 	system("CLS");
 
 	//Prints every line from the linked list
-	for (int position = 1; position <= lines.getLength(); position++) {	
+	for (int position = 1; position <= lines.getLength(); position++) {
 		cout << lines.getEntry(position) << endl;
 	}
 
 	//Places cursor at coordinates (0, 0)
 	placeCursorAt(point);
 }
+
+//template <typename T>
+//int binarySearch(const T anArray[], int first, int last, T target)
+//{
+//	int index;
+//	if (first > last)
+//		index = -1; // target not in original array
+//	else
+//	{
+//		// If target is in anArray, anArray[first] <= target <= anArray[last]
+//		int mid = first + (last - first) / 2;
+//		if (target == anArray[mid])
+//			index = mid; // target found at anArray[mid]
+//		else if (target < anArray[mid])
+//			// Point X
+//			index = binarySearch(anArray, first, mid - 1, target);
+//		else
+//			// Point Y
+//			index = binarySearch(anArray, mid + 1, last, target);
+//	}  // end if
+//
+//	return index;
+//}  // end binarySearch
+
+//void Editor::displayLines() {
+//	system("CLS");
+//
+//	string nextLine;
+//
+//	//Goes through each line in the linked list 
+//	for (int position = 1; position <= lines.getLength(); position++)
+//	{
+//		nextLine = lines.getEntry(position);
+//
+//		int i = 0;
+//		while (i < nextLine.length()) {
+//			string word;
+//			
+//			//Isolate a word at a time (can contains underscores)
+//			if (isalpha(nextLine[i])) {
+//				while (isalpha(nextLine[i]) || nextLine[i] == '_') {
+//					word += nextLine[i];
+//					i++;
+//				}
+//				if (binarySearch<string>(keyWords, 0, numKeywords - 1, word) != -1)  //Found
+//					colorText(1);
+//				else
+//					colorText(0);
+//				cout << word;
+//			}
+//			else {
+//				colorText(0);
+//				cout << nextLine[i];
+//				i++;
+//			}
+//
+//		}
+//
+//		cout << endl;
+//	}
+//
+//	placeCursorAt(point);
+//} 
 
 void Editor::run() {
 	char command;
@@ -109,7 +199,7 @@ void Editor::deleteCharacter() {							//works VC
 	currentLine = lines.getEntry(point.getY() + 1);			//Stores copy of string using getEntry to get the line in the file
 
 	lastChange.setChanges(currentLine);
-	lastChange.setPosition(point.getY() + 1);
+	lastChange.setPosition(point);
 	lastChange.setCommand('x');
 
 	undoChange.push(lastChange);
@@ -162,7 +252,7 @@ void Editor::deleteLine() {
 	command = _getwch();									//Gets the next character enter by end-user
 
 	lastChange.setChanges(currentLine);
-	lastChange.setPosition(point.getY() + 1);
+	lastChange.setPosition(point);
 	lastChange.setCommand('d');
 
 	undoChange.push(lastChange);
@@ -252,12 +342,15 @@ void Editor::quit() {
 void Editor::undo() {
 	if (!undoChange.isEmpty()) {
 		lastChange = undoChange.peek();
+		point = lastChange.getPosition();
 		if (lastChange.getCommand() == 'x') {
-			lines.replace(lastChange.getPosition(), lastChange.getChanges());
+			lines.replace(point.getY() + 1, lastChange.getChanges());
+			placeCursorAt(point);
 		}
 		else if (lastChange.getCommand() == 'd')
 		{
-			lines.insert(lastChange.getPosition(), lastChange.getChanges());
+			lines.insert(point.getY() + 1, lastChange.getChanges());
+			placeCursorAt(point);
 		}
 		undoChange.pop();
 	}

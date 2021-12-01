@@ -11,14 +11,14 @@ class Changes
 public:
 	Changes();
 	void setChanges(string);
-	void setPosition(int);
+	void setPosition(Position);
 	void setCommand(char);
 	string getChanges();
-	int getPosition();
+	Position getPosition();
 	char getCommand();
 
 private:
 	string userChanges;
-	int userPosition;
+	Position userPosition;
 	char userCommand;
 };

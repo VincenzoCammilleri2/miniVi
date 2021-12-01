@@ -11,7 +11,7 @@ void Changes::setChanges(string userChanges) {
 	this->userChanges = userChanges;
 }
 
-void Changes::setPosition(int userPosition) {
+void Changes::setPosition(Position userPosition) {
 	this->userPosition = userPosition;
 }
 
@@ -23,7 +23,7 @@ string Changes::getChanges() {
 	return userChanges;
 }
 
-int Changes::getPosition() {
+Position Changes::getPosition() {
 	return userPosition;
 }
 

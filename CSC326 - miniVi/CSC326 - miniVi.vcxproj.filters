@@ -61,5 +61,8 @@
     <Text Include="TestDummy.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="keywords.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
