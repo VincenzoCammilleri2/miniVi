@@ -76,13 +76,13 @@ int binarySearch(const T anArray[], int first, int last, T target)
 	return index;
 }  // end binarySearch
 
-Editor::Editor(string filename) {
+Editor::Editor(char* inputfile, string keywordfile) {
 	ifstream inFile;
 	int linePosition = 0;
 	string line;
 	string keyword;
 
-	inFile.open(filename);
+	inFile.open(inputfile);
 
 	//Check if file can be opened
 	if (!inFile) {
@@ -99,7 +99,7 @@ Editor::Editor(string filename) {
 
 	inFile.close();
 
-	inFile.open("keywords.txt");
+	inFile.open(keywordfile);
 
 	//Check if file can be opened
 	if (!inFile) {

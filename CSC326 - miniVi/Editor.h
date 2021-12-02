@@ -16,7 +16,7 @@ const int MAX_SIZE = 61;
 class Editor {
 public:
 	Editor();
-	Editor(string filename);
+	Editor(char* inputfile, string keywordfile);
 	void displayLines();
 	void run();
 	void deleteCharacter();
