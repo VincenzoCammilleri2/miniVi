@@ -12,8 +12,6 @@
 
 using namespace std;
 
-const int MAX_SIZE = 61;
-
 class Editor {
 public:
 	Editor();
@@ -38,8 +36,6 @@ private:
 	Position point;
 	Changes lastChange;
 	bool changes = false;
-	int numKeywords = 0;
-	//string keyWords[MAX_SIZE];
 };
 
 #endif

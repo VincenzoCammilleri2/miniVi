@@ -9,34 +9,6 @@ Editor::Editor() {
 
 }
 
-template<class ItemType>
-void bubbleSort(ItemType theArray[], int n)
-{
-	bool sorted = false; // False when swaps occur
-	int pass = 1;
-	while (!sorted && (pass < n))
-	{
-		// At this point, theArray[n+1-pass..n-1] is sorted
-		// and all of its entries are > the entries in theArray[0..n-pass]
-		sorted = true; // Assume sorted
-		for (int index = 0; index < n - pass; index++)
-		{
-			// At this point, all entries in theArray[0..index-1]
-			// are <= theArray[index]
-			int nextIndex = index + 1;
-			if (theArray[index] > theArray[nextIndex])
-			{
-				// Exchange entries
-			std:swap(theArray[index], theArray[nextIndex]);
-				sorted = false; // Signal exchange
-			} // end if
-		}  // end for
-		// Assertion: theArray[0..n-pass-1] < theArray[n-pass]
-
-		pass++;
-	}  // end while
-}  // end bubbleSort
-
 void placeCursorAt(Position coordinate) {
 	COORD coord;
 	coord.X = coordinate.getX();
@@ -52,29 +24,6 @@ void colorText(int value) {
 	FlushConsoleInputBuffer(hConsole);
 	SetConsoleTextAttribute(hConsole, value + 240);
 }
-
-template <typename T>
-int binarySearch(const T anArray[], int first, int last, T target)
-{
-	int index;
-	if (first > last)
-		index = -1; // target not in original array
-	else
-	{
-		// If target is in anArray, anArray[first] <= target <= anArray[last]
-		int mid = first + (last - first) / 2;
-		if (target == anArray[mid])
-			index = mid; // target found at anArray[mid]
-		else if (target < anArray[mid])
-			// Point X
-			index = binarySearch(anArray, first, mid - 1, target);
-		else
-			// Point Y
-			index = binarySearch(anArray, mid + 1, last, target);
-	}  // end if
-
-	return index;
-}  // end binarySearch
 
 Editor::Editor(char* inputfile, string keywordfile) {
 	ifstream inFile;
@@ -113,7 +62,6 @@ Editor::Editor(char* inputfile, string keywordfile) {
 		keywordsTree.add(keyword);							//Store each keywords in a binary search tree
 	}
 
-	//bubbleSort(keyWords, MAX_SIZE);							//Sorts the keywords array
 	displayLines();
 }
 
