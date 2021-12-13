@@ -142,17 +142,23 @@
   <ItemGroup>
     <ClCompile Include="Changes.cpp" />
     <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="NotFoundException.cpp" />
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="PrecondViolatedExcep.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryNode.h" />
+    <ClInclude Include="BinaryNodeTree.h" />
+    <ClInclude Include="BinarySearchTree.h" />
+    <ClInclude Include="BinaryTreeInterface.h" />
     <ClInclude Include="Changes.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="LinkedStack.h" />
     <ClInclude Include="ListInterface.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="NotFoundException.h" />
     <ClInclude Include="Position.h" />
     <ClInclude Include="PrecondViolatedExcep.h" />
   </ItemGroup>

@@ -8,6 +8,7 @@
 #include "Position.h"
 #include "Windows.h"
 #include "Changes.h"
+#include "BinarySearchTree.h"
 
 using namespace std;
 
@@ -33,11 +34,12 @@ public:
 private:
 	LinkedList<string> lines;
 	LinkedStack<Changes> undoChange;
+	BinarySearchTree<string> keywordsTree;
 	Position point;
 	Changes lastChange;
 	bool changes = false;
 	int numKeywords = 0;
-	string keyWords[MAX_SIZE];
+	//string keyWords[MAX_SIZE];
 };
 
 #endif

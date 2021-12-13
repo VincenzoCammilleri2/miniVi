@@ -109,12 +109,11 @@ Editor::Editor(char* inputfile, string keywordfile) {
 
 	//Iterate through the end of file
 	while (!inFile.eof()) {
-		inFile >> keyword;													
-		keyWords[numKeywords] = keyword;					//Store each keyword
-		numKeywords++;										//Increments numKeywords
+		inFile >> keyword;																
+		keywordsTree.add(keyword);							//Store each keywords in a binary search tree
 	}
 
-	bubbleSort(keyWords, MAX_SIZE);							//Sorts the keywords array
+	//bubbleSort(keyWords, MAX_SIZE);							//Sorts the keywords array
 	displayLines();
 }
 
@@ -138,7 +137,7 @@ void Editor::displayLines() {
 					word += nextLine[i];
 					i++;
 				}
-				if (binarySearch<string>(keyWords, 0, numKeywords - 1, word) != -1)  //Found
+				if (keywordsTree.contains(word))  
 					colorText(1);
 				else
 					colorText(0);
