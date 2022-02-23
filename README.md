@@ -1,5 +1,5 @@
 # miniVi
-A C++ Program of a miniVi text editor
+A C++ Program of a miniVi text editor. User can edit a text file similar to a Vi text editor using commands to delete characters, delete lines, undo changes, move cursor, save file, and quit.
 
 ### First Iteration
 - [x] Read lines from file
